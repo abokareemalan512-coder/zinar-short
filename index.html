@@ -3,41 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZINAR 512 - دخول</title>
+<title>ZINAR 512</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@800;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#0a0f1e;color:#fff;font-family:system-ui;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.card{width:90%;max-width:360px;background:#151b2e;border-radius:20px;padding:28px;border:1px solid #223}
-h1{text-align:center;margin:0}h1 span{color:#38bdf8}
-input{width:100%;padding:14px;margin:10px 0;border-radius:12px;border:1px solid #334;background:#0a0f1e;color:#fff;text-align:center;font-size:18px}
-button{width:100%;padding:14px;background:#38bdf8;border:none;border-radius:12px;font-weight:900;font-size:18px;margin-top:10px}
-p{font-size:12px;opacity:.5;text-align:center;margin-top:15px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+body{background:#050a18;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:100%;max-width:380px;background:linear-gradient(180deg,rgba(255,255,255,0.09),rgba(255,255,255,0.04));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:28px 24px}
+.logo h1{text-align:center;font-size:28px;font-weight:800;color:#fff}.logo h1 span{color:#38bdf8}
+.title{text-align:center;margin:18px 0 5px;font-size:26px;font-weight:800;color:#e2f3ff}
+.sub{text-align:center;color:#7fb0d0;font-size:13px;margin-bottom:20px}
+.input{width:100%;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:13px 15px;color:#fff;font-size:15px;outline:none;margin-bottom:12px;text-align:center}
+.btn{width:100%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);border:none;border-radius:14px;padding:14px;color:#002233;font-size:19px;font-weight:800;cursor:pointer}
+.btn-free{width:100%;background:transparent;border:1px dashed #22c55e;color:#4ade80;border-radius:14px;padding:12px;margin-top:12px;font-size:15px;font-weight:700;cursor:pointer}
+.divider{text-align:center;margin:14px 0;color:rgba(255,255,255,0.3);font-size:12px}
+#msg{text-align:center;margin-top:10px;font-size:12px;display:none;padding:8px;border-radius:10px}
+.footer{text-align:center;margin-top:16px;color:rgba(255,255,255,0.35);font-size:11px}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>ZINAR <span>512</span></h1>
-<p>ادخل كود الكرت للاتصال</p>
+<div class="logo"><h1>ZINAR <span>512</span> 📶</h1></div>
+<div class="title">ادخل كود الكرت</div>
+<div class="sub">أدخل بيانات الكرت للاتصال</div>
 <form id="f">
-<input id="u" placeholder="كود الكرت" required>
-<input id="p" placeholder="كلمة السر - نفس الكود" required>
-<button type="submit">اتصال 🚀</button>
+<input id="u" class="input" placeholder="رمز الكرت" required>
+<input id="p" class="input" placeholder="كلمة المرور (نفس الرمز)">
+<button class="btn" type="submit" id="btn">اتصال 🚀</button>
 </form>
-<p id="msg"></p>
-<p>zinar.net-radius.onrender.com</p>
+<div class="divider">—— أو ——</div>
+<button class="btn-free" id="freeBtn">🆓 5 دقائق مجانية - للطوارئ</button>
+<div id="msg"></div>
+<div class="footer">© ZINAR 512 • فعل الخير باقي</div>
 </div>
 <script>
-const loginLink = new URLSearchParams(location.search).get('link-login') || 'http://13.13.13.13/login';
-const orig = new URLSearchParams(location.search).get('link-orig') || 'https://google.com';
-document.getElementById('u').addEventListener('input',e=>{document.getElementById('p').value=e.target.value});
-document.getElementById('f').onsubmit = e=>{
- e.preventDefault();
- const u=document.getElementById('u').value.trim();
- const p=document.getElementById('p').value.trim()||u;
- document.getElementById('msg').innerText='جاري الاتصال...';
- const form=document.createElement('form');form.method='post';form.action=loginLink;
- [['username',u],['password',p],['dst',orig]].forEach(k=>{let i=document.createElement('input');i.type='hidden';i.name=k[0];i.value=k[1];form.appendChild(i);});
- document.body.appendChild(form);form.submit();
+function qp(k){return new URLSearchParams(location.search).get(k)||""}
+let linkLogin=qp('link-login')||qp('link_login')||"http://13.13.13.13/login";
+let linkOrig=qp('link-orig')||"https://google.com";
+let u=document.getElementById('u'),p=document.getElementById('p'),btn=document.getElementById('btn'),freeBtn=document.getElementById('freeBtn'),msg=document.getElementById('msg');
+function doLogin(user,pass){
+let f=document.createElement('form');f.method='post';f.action=linkLogin;
+[['username',user],['password',pass],['dst',linkOrig]].forEach(a=>{let i=document.createElement('input');i.type='hidden';i.name=a[0];i.value=a[1];f.appendChild(i);});
+document.body.appendChild(f);f.submit();
 }
+document.getElementById('f').onsubmit=e=>{
+e.preventDefault();let user=u.value.trim(),pass=p.value.trim()||user;
+if(!user)return;btn.innerText="جاري الاتصال...";msg.style.display="block";msg.style.background="rgba(56,189,248,0.15)";msg.style.color="#7dd3fc";msg.innerText="جاري الربط...";
+doLogin(user,pass);
+};
+freeBtn.onclick=()=>{
+if(localStorage.getItem('zinar_free_used')){msg.style.display="block";msg.style.background="rgba(239,68,68,0.15)";msg.style.color="#fca5a5";msg.innerText="❌ استخدمت المجاني من قبل";return;}
+msg.style.display="block";msg.style.background="rgba(34,197,94,0.15)";msg.style.color="#86efac";msg.innerText="✅ عم نوصلك 5 دقائق مجانية...";localStorage.setItem('zinar_free_used','1');
+doLogin('free5','free5');
+};
 </script>
 </body>
 </html>
