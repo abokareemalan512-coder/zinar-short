@@ -1,22 +1,15 @@
-const subscribers = {
-  "test1": "test1",
-  "basil": "512",
-  "ahmad": "1234",
-  "zinar100": "100",
-  "zinar200": "200",
-  "zinar500": "500"
+const cards = {
+  "basil": "512", // المستخدم basil الباسورد 512
+  "ahmad": "1234", // مختلفين
+  "user1": "pass99", // مختلفين
+  "zinar1": "zinar1", // نفس الشي بيصير كمان
 };
 
-export default function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  const u = (req.query.user||'').trim();
-  const p = (req.query.pass||'').trim();
-
-  // فحص
-  if (subscribers[u] && subscribers[u] === p) {
-    console.log(`LOGIN SUCCESS: ${u}`);
-    return res.status(200).send('OK');
+export default function handler(req, res){
+  const {user, pass} = req.query;
+  if(cards[user] && cards[user] == pass){
+    return res.status(200).send("OK");
   } else {
-    return res.status(401).send('FAIL');
+    return res.status(200).send("FAIL");
   }
 }
