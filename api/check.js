@@ -3,6 +3,8 @@ const subscribers = {
   "basil": "512",
   "ahmad": "1234",
   "zinar100": "100",
+  "zinar200": "200",
+  "zinar500": "500"
 };
 
 export default function handler(req, res) {
@@ -10,10 +12,11 @@ export default function handler(req, res) {
   const u = (req.query.user||'').trim();
   const p = (req.query.pass||'').trim();
 
-  // فحص + تسجيل
+  // فحص
   if (subscribers[u] && subscribers[u] === p) {
-    console.log(`LOGIN SUCCESS: ${u} at ${new Date().toISOString()}`);
+    console.log(`LOGIN SUCCESS: ${u}`);
     return res.status(200).send('OK');
+  } else {
+    return res.status(401).send('FAIL');
   }
-  return res.status(200).send('NO');
 }
